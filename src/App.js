@@ -14,14 +14,18 @@ function App() {
   useEffect(() => {
     console.log("I run only once.");
   }, []);
-  // keyword가 변화할 때만 코드가 실행되게 해보자. (버튼 누를 때에 검색input이 실행되는 것을 방지)
+  // keyword가 변화할 때만 코드가 실행 (버튼 누를 때에 검색input이 실행되는 것을 방지)
   useEffect(() => {
     console.log("I run when 'keyword' changes.");
   }, [keyword]);
-  // counter가 변화할 때만 코드가 실행되게 해보자.
+  // counter가 변화할 때만 코드가 실행
   useEffect(() => {
     console.log("I run when 'counter' changes.");
   }, [counter]);
+  // keyword, counter 중에서 하나라도 변화하면 코드가 실행
+  useEffect(() => {
+    console.log("I run when 'keyword' & 'counter' changes.");
+  }, [keyword, counter]);
   return (
     <div>
       <input 
