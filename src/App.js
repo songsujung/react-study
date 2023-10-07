@@ -1,38 +1,38 @@
-import Button from "./Button";
-import styles from "./App.module.css";
+
 import { useState, useEffect } from "react";
 
-// cleanUp function : 컴포넌트가 사라진 후에 실행될 함수를 지정하는 것이며 반환되는 함수가 클린업함수이다. 메모리 누수 방지를 위해 사용(자주 사용하지 않는 방식)
-// 버튼을 눌러서 함수가 실행되면서 버튼이 사라지면 'destroyed :('라는 메시지를 콘솔에 출력(리턴)
-function Hello() {
-  useEffect(() => {
-    console.log("hi :)");
-    return () => console.log("bye :(");
-  }, []);
-  // 이 코드보다 위의 방식으로 사용하는 것이 좋음
-  // useEffect(function(){
-  //   console.log("hi :)");
-  //   return function() {
-  //     console.log("bye :(");
-  //   }
-  // }, []);
-  return <h1>Hello</h1>;
-}
-// function Hello() {
-//   useEffect(() => {
-//     console.log("created :)");
-//     return () => console.log("destroyed :(") // 이 부분을 cleanUp함수라고 함
-//   }, []);
-//   return <h1>Hello</h1>;
-// }
-
+// Todo 만들기
+// 갖고 있는 array를 직접적으로 수정하지 않으면서 한가지를 더 추가. toDos.push or toDos=""같이 State를 직접적으로 수정X, 수정하는 함수 생성
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]); // 여러 개의 toDo를 받을 수 있는 array 생성
+  const onChange = (event) => setToDo(event.target.value); // toDo값을 수정하는 함수
+  const onSubmit = (event) => {
+    event.preventDefault();
+    // toDo가 비어있다면 리턴
+    if(toDo === "") {
+      return;
+    }
+    // setTodos 안에 함수를 넣어서 array를 수정
+    // 현재상태:currnentArray, []새로운 배열안에 toDo, ...currentArray 담음 (...을 쓰면 현재상태에 입력한toDo가 추가되는 배열 생성됨, ...을 안하면 배열안에 배열이 추가됨)
+    setToDos(currentArray => [toDo, ...currentArray]);
+    // setToDo 함수를 불러와서 input 비우기
+    setToDo("");
+  };
+  console.log(toDos);
   return (
     <div>
-      {showing ? <Hello/> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+      <h1>My To Dos({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input 
+          onChange={onChange} 
+          value={toDo} 
+          type="text" 
+          placeholder="Write your to do..."
+        />
+        <button>Add To Do</button>
+      </form>
+
     </div>
   );
 }
