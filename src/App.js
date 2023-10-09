@@ -1,32 +1,44 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-// 암호화폐와 그 가격을 나열
 function App() {
   const [loading, setLoading] = useState(true);
-  const [coins, setCoins] = useState([]); // 기본 값으로 빈 배열을 넘겨주어 coin array를 0으로 시작, 아무 것도 설정을 안해주면 coins가 undefined이 되어 에러가 난다.
+  const [movies, setMovies] = useState([]);
+  // then() 대신에 async, await을 사용
+  const getMovies = async() => {
+    const json = await (
+      await fetch(
+      `https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`
+      )
+    ).json();
+    //const json = await response.json();
+    setMovies(json.data.movies);
+    setLoading(false);
+  };
   useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers")
-      .then(response => response.json())
-      .then((json) => {
-        setCoins(json)
-        setLoading(false);
-      });
-  }, []); // 해당 Effect를 한 번만 사용할 거기때문에 어떤 것에도 의존하지 않고 []로 비워둠(빈 배열이면 한 번만 작동)
+    getMovies()
+  }, []);
+  console.log(movies);
   return (
+  // map함수를 사용할 때 태그에 고유한 키값을 넣어주어야한다.  
     <div>
-      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
-      {loading ? (
-        <strong>Loading...</strong>
+      {loading ? (<h1>loading...</h1>
       ) : (
-        <ul>
-        {coins.map((coin) => (
-          <li>{coin.name}({coin.symbol}) : ${coin.quotes.USD.price} USD</li>
+      <div>
+        {movies.map((movie) => (
+          <div key={movie.id}>
+            <img src={movie.medium_cover_image} />
+            <h2>{movie.title}</h2>
+            <p>{movie.summary}</p>
+            <ul>
+              {movie.genres.map((g) => (
+                <li key={g}>{g}</li>
+              ))}
+            </ul>
+          </div>
         ))}
-        </ul>
-      )}
-
+        </div>
+        )}
     </div>
   );
 }
-
 export default App;
