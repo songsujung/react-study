@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/react-study.git/static/js/main.cf351fbd.js",
-    "index.html": "/react-study.git/index.html",
-    "main.cf351fbd.js.map": "/react-study.git/static/js/main.cf351fbd.js.map"
+    "main.js": "/react-study/static/js/main.cf351fbd.js",
+    "index.html": "/react-study/index.html",
+    "main.cf351fbd.js.map": "/react-study/static/js/main.cf351fbd.js.map"
   },
   "entrypoints": [
     "static/js/main.cf351fbd.js"
